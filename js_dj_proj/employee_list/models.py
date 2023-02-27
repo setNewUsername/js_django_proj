@@ -16,6 +16,7 @@ class Employee(models.Model):
     name = models.CharField(max_length=40)
     second_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
+    number = models.IntegerField(default=000)
 
     emp_department = models.ForeignKey(Department, on_delete=models.CASCADE)
     emp_title = models.ForeignKey(Title, on_delete=models.CASCADE)

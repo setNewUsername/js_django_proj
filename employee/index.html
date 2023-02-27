@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="./style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="header">
+            <p>
+                Телефонный справочник
+            </p>
+        </div>
+        <div class="table_container">
+            <div class="content_container">
+                <!--search field-->
+                <div class="input_area_container">
+                    <input class="row text_input" placeholder="Строка поиска">
+                    <div class="clear_input">
+                        <p>
+                            x
+                        </p>
+                    </div>
+                </div>
+                <!--search field-->
+
+                <!--table header-->
+                <div class="table_header">
+                    <div class="table_column_header" style="width: auto">
+                        <p>
+                            Фото
+                        </p>
+                    </div>
+                    <div class="table_column_header" id="fio">
+                        <p>
+                            ФИО
+                        </p>
+                        <div class="arrow">
+                            >
+                        </div>
+                    </div>
+                    <div class="table_column_header" id="title">
+                        <p>
+                            Должность
+                        </p>
+                        <div class="arrow">
+                            >
+                        </div>
+                    </div>
+                    <div class="table_column_header" id="dep">
+                        <p>
+                            Отдел
+                        </p>
+                        <div class="arrow">
+                            >
+                        </div>
+                    </div>
+                    <div class="table_column_header" style="width: auto" id="number">
+                        <p>
+                            Номер
+                        </p>
+                        <div class="arrow" style="margin-left: 5px;">
+                            >
+                        </div>
+                    </div>
+                </div>
+                <!--table header-->
+
+                <!--table content-->
+                <div class="table_content">
+                </div>
+                <!--table header-->
+            </div>
+        </div>
+        <script src="./js/data_functions.js"></script>
+        <script src="./js/interface_functions.js"></script>
+        <script>
+            getData();
+
+            function fillTable(){
+                data.forEach(element => {
+                    tableContElement.insertAdjacentHTML('beforeend', appendInfoRow(element['picture'], element['fio'], element['title'], element['dep'], element['number']));
+                });
+            }
+
+            function sortBy(id, array){
+                switch(id){
+                    case 'fio':
+                    case 'dep':
+                    case 'title':
+                        array.sort((left, right) => {
+                            let lowerLeft = left[id].toLowerCase(), lowerRight = right[id].toLowerCase();
+                            if (lowerLeft < lowerRight)
+                                return -1
+                            else if(lowerLeft > lowerRight)
+                                return 1
+                            else
+                                return 0
+                        });
+                    break;
+                    case 'number':
+                        array.sort((left, right) => {
+                            return left['number'] - right['number']
+                        });
+                    break;
+                }
+                tableContElement.innerHTML = '';
+                fillTable();
+            }
+
+            let tableContElement = document.getElementsByClassName('table_content')[0];
+            let inputField = document.getElementsByClassName('row text_input')[0];
+            let clearBut = document.getElementsByClassName('clear_input')[0];
+            let sortButtons = Array.from(document.getElementsByClassName('table_column_header'));
+
+            let data = []
+
+            sortButtons.forEach(element => {
+                setListenerToSortColumnsHeaders(element, data);
+            });
+
+            clearBut.addEventListener('click', ()=>{
+                inputField.value = '';
+                fillTable();
+            });
+
+            inputField.addEventListener('input', (event)=>{
+                searchByInput(event.target.value, data)
+            });
+        </script>
+    </body>
+</html>

@@ -1,5 +1,5 @@
 async function getData(){
-    let response = await fetch('http://192.168.0.12:8000/employee/list/');
+    let response = await fetch('http://127.0.0.1:8000/employee/list/');
     if (response.ok) {
         let json = await response.json();
         json.forEach(element => {
